@@ -53,19 +53,32 @@ About the origin of user's request:
 export const systemPrompt = ({
   selectedChatModel,
   requestHints,
+  language
 }: {
   selectedChatModel: string;
   requestHints: RequestHints;
+  language: string;
 }) => {
   const requestPrompt = getRequestPromptFromHints(requestHints);
+  console.log(' > locale: ' + language)
 
   if (selectedChatModel === 'chat-model-reasoning') {
+
     return `${regularPrompt}\n\n${requestPrompt}`;
   } else {
-    return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+    console.log(' > selected chat model : ' + language)
+    if (language == "en") {
+      return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+    } else {
+      console.log(`${languagePrompt}\n\n${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`)
+      return `${languagePrompt}\n\n${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+    }
   }
 };
 
+export const languagePrompt = `
+You have to use Italian 
+`
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:
 
@@ -179,6 +192,10 @@ Please follow the below guide:
   Once you’ve identified the user’s prompt level and provided relevant feedback, refine their prompt according to the suggestions offered. 
 `
 
-export const systemPromptForFeedback = () => {
-  return feedbackPrompt
-}
+export const systemPromptForFeedback = ({ language }: { language: string }) => {
+  if (language === "en") {
+    return feedbackPrompt;
+  } else {
+    return `${languagePrompt}\n\n${feedbackPrompt}`;
+  }
+};

@@ -20,6 +20,7 @@ import { useSearchParams } from 'next/navigation';
 import { useChatVisibility } from '@/hooks/use-chat-visibility';
 import { useAutoResume } from '@/hooks/use-auto-resume';
 import { ChatSDKError } from '@/lib/errors';
+import { useLocale } from 'next-intl';
 
 export function Chat({
   id,
@@ -39,7 +40,8 @@ export function Chat({
   autoResume: boolean;
 }) {
   const { mutate } = useSWRConfig();
-
+  const locale = useLocale();
+  console.log("chat locale: " + locale)
   const { visibilityType } = useChatVisibility({
     chatId: id,
     initialVisibilityType,
@@ -69,6 +71,7 @@ export function Chat({
       message: body.messages.at(-1),
       selectedChatModel: initialChatModel,
       selectedVisibilityType: visibilityType,
+      language: locale
     }),
     onFinish: () => {
       mutate(unstable_serialize(getChatHistoryPaginationKey));
@@ -82,6 +85,19 @@ export function Chat({
       }
     },
   });
+
+  const {
+    messages: feedbackMessages,
+    append: requestFeedback,
+    data: feedbackStream
+  } = useChat({
+    id,
+    api: '/api/feedback',
+  });
+
+  // useEffect(() => {
+  //   console.log(feedbackStream);
+  // }, [feedbackStream]);
 
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
@@ -116,9 +132,6 @@ export function Chat({
     setMessages,
   });
 
-  useEffect(()=>{
-    console.log(messages)
-  },[messages])
   return (
     <>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
@@ -177,7 +190,29 @@ export function Chat({
         votes={votes}
         isReadonly={isReadonly}
         selectedVisibilityType={visibilityType}
+        feedbackMessages={feedbackMessages}
       />
+      {/* {
+        feedbackMessages.length > 0 && (
+          <FeedbackArtifact
+            chatId={id}
+            input={input}
+            setInput={setInput}
+            handleSubmit={handleSubmit}
+            status={status}
+            stop={stop}
+            attachments={attachments}
+            setAttachments={setAttachments}
+            append={append}
+            messages={feedbackMessages}
+            setMessages={setMessages}
+            reload={reload}
+            votes={votes}
+            isReadonly={isReadonly}
+            selectedVisibilityType={visibilityType}
+          />
+        )
+      } */}
     </>
   );
 }

@@ -1,9 +1,14 @@
-import { memo } from 'react';
+import { Dispatch, memo, SetStateAction } from 'react';
 import { CrossIcon } from './icons';
 import { Button } from './ui/button';
 import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
+import { UIMessage } from 'ai';
 
-function PureArtifactCloseButton() {
+type PureArtifactCloseButtonProps = {
+  setFeedback: Dispatch<SetStateAction<Array<UIMessage>>>;
+};
+
+function PureArtifactCloseButton({ setFeedback }: PureArtifactCloseButtonProps) {
   const { setArtifact } = useArtifact();
 
   return (
@@ -12,12 +17,14 @@ function PureArtifactCloseButton() {
       variant="outline"
       className="h-fit p-2 dark:hover:bg-zinc-700"
       onClick={() => {
+        console.log('Closing artifact');
+        setFeedback([])
         setArtifact((currentArtifact) =>
           currentArtifact.status === 'streaming'
             ? {
-                ...currentArtifact,
-                isVisible: false,
-              }
+              ...currentArtifact,
+              isVisible: false,
+            }
             : { ...initialArtifactData, status: 'idle' },
         );
       }}

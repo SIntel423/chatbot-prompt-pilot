@@ -19,6 +19,7 @@ import { MessageEditor } from './message-editor';
 import { DocumentPreview } from './document-preview';
 import { MessageReasoning } from './message-reasoning';
 import type { UseChatHelpers } from '@ai-sdk/react';
+import { useTranslations } from 'next-intl';
 
 const PurePreviewMessage = ({
   chatId,
@@ -40,6 +41,7 @@ const PurePreviewMessage = ({
   requiresScrollPadding: boolean;
 }) => {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
+  const t = useTranslations('Home');
 
   return (
     <AnimatePresence>
@@ -119,7 +121,7 @@ const PurePreviewMessage = ({
                               <PencilEditIcon />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Edit message</TooltipContent>
+                          <TooltipContent>{t('edit_message')}</TooltipContent>
                         </Tooltip>
                       )}
 
@@ -253,7 +255,7 @@ export const PreviewMessage = memo(
 
 export const ThinkingMessage = () => {
   const role = 'assistant';
-
+  const t = useTranslations('Home')
   return (
     <motion.div
       data-testid="message-assistant-loading"
@@ -276,7 +278,7 @@ export const ThinkingMessage = () => {
 
         <div className="flex flex-col gap-2 w-full">
           <div className="flex flex-col gap-4 text-muted-foreground">
-            Prompt Pilot is thinking...
+            {t('think')}
           </div>
         </div>
       </div>

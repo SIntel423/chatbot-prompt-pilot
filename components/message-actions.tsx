@@ -12,9 +12,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import equal from 'fast-deep-equal';
 import { toast } from 'sonner';
+import { useChat } from '@ai-sdk/react';
+import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
+import { useLocale, useTranslations } from 'next-intl';
 
 export function PureMessageActions({
   chatId,
@@ -27,12 +30,47 @@ export function PureMessageActions({
   vote: Vote | undefined;
   isLoading: boolean;
 }) {
+  const {
+    messages: feedbackMessages,
+    append: requestFeedback,
+    setMessages
+  } = useChat({
+    id: chatId,
+    api: '/api/feedback',
+  });
+
+  const locale = useLocale();
   const { mutate } = useSWRConfig();
   const [_, copyToClipboard] = useCopyToClipboard();
+  const { setArtifact } = useArtifact();
+  const t = useTranslations('Home');
+
+  const handleFeedbackClick = async () => {
+    setArtifact((currentArtifact) =>
+      currentArtifact.status === 'streaming'
+        ? {
+          ...currentArtifact,
+          isVisible: false,
+        }
+        : { ...initialArtifactData, status: 'idle' },
+    );
+    setMessages([]);
+    if (chatId) {
+      await requestFeedback({
+        role: 'user',
+        content: '', // feedback server handles actual message
+        data: {
+          chatId,
+          messageId: message.id,
+          language: locale,
+        },
+      });
+    }
+  };
 
   if (isLoading) return null;
   if (message.role === 'user') return (
-<TooltipProvider delayDuration={0}>
+    <TooltipProvider delayDuration={0}>
       <div className="flex flex-row gap-2 justify-end">
         <Tooltip>
           <TooltipTrigger asChild>
@@ -40,21 +78,12 @@ export function PureMessageActions({
               className="py-1 px-2 h-fit text-muted-foreground !pointer-events-auto"
               variant="outline"
               disabled={vote && !vote.isUpvoted}
-              onClick={async () => {
-                const downvote = fetch('/api/feedback', {
-                  method: 'POST',
-                  body: JSON.stringify({
-                    chatId,
-                    messageId: message.id,
-                  }),
-                });
-                console.log(downvote)
-              }}
+              onClick={handleFeedbackClick}
             >
-             <FeedbackIcon/>
+              <FeedbackIcon />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Prompt Feedback</TooltipContent>
+          <TooltipContent>{t('prompt_feedback')}</TooltipContent>
         </Tooltip>
       </div>
     </TooltipProvider>
@@ -87,7 +116,7 @@ export function PureMessageActions({
               <CopyIcon />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Copy</TooltipContent>
+          <TooltipContent>{t('copy')}</TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -140,7 +169,7 @@ export function PureMessageActions({
               <ThumbUpIcon />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Upvote Response</TooltipContent>
+          <TooltipContent>{t('upvote')}</TooltipContent>
         </Tooltip>
 
         <Tooltip>
@@ -193,7 +222,7 @@ export function PureMessageActions({
               <ThumbDownIcon />
             </Button>
           </TooltipTrigger>
-          <TooltipContent>Downvote Response</TooltipContent>
+          <TooltipContent>{t('downvote')}</TooltipContent>
         </Tooltip>
       </div>
     </TooltipProvider>

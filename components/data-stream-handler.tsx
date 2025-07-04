@@ -8,28 +8,40 @@ import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
 
 export type DataStreamDelta = {
   type:
-    | 'text-delta'
-    | 'code-delta'
-    | 'sheet-delta'
-    | 'image-delta'
-    | 'title'
-    | 'id'
-    | 'suggestion'
-    | 'clear'
-    | 'finish'
-    | 'kind';
+  | 'text-delta'
+  | 'code-delta'
+  | 'sheet-delta'
+  | 'image-delta'
+  | 'title'
+  | 'id'
+  | 'suggestion'
+  | 'clear'
+  | 'finish'
+  | 'kind';
   content: string | Suggestion;
 };
 
 export function DataStreamHandler({ id }: { id: string }) {
-  const { data: dataStream } = useChat({ id });
+  const { data: dataStream } = useChat({ id, api: '/api/chat' });
+
+  const {
+    messages: feedbackMessages,
+    data: feedbackStream,
+  } = useChat({
+    id,
+    api: '/api/feedback',
+  });
+
   const { artifact, setArtifact, setMetadata } = useArtifact();
   const lastProcessedIndex = useRef(-1);
 
   useEffect(() => {
+    console.log(feedbackMessages)
+  }, [feedbackMessages]);
+
+  useEffect(() => {
     if (!dataStream?.length) return;
-alert(id)
-    console.log("erwe")
+    console.log("streaming")
     const newDeltas = dataStream.slice(lastProcessedIndex.current + 1);
     lastProcessedIndex.current = dataStream.length - 1;
 

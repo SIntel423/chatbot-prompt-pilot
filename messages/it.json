@@ -1,0 +1,67 @@
+{
+    "Home": {
+        "greeting_hearder": "Ciao!",
+        "greeting_description": "Come posso aiutarti oggi?",
+        "message_box_placeholder": "Invia un messaggio...",
+        "prompt_feedback": "Feedback sul prompt",
+        "edit_message": "Modifica messaggio",
+        "copy": "Copia",
+        "upvote": "Vota positivamente la risposta",
+        "downvote": "Vota negativamente la risposta",
+        "think": "Prompt Pilot sta pensando..."
+    },
+    "Account": {
+        "signin": "Accedi",
+        "signin_description": "Usa la tua email e password per accedere",
+        "email": "Indirizzo email",
+        "password": "Password",
+        "dont_have_account": "Non hai un account?",
+        "signup": "Registrati",
+        "free": "gratuitamente.",
+        "language": "Lingua",
+        "en": "Inglese",
+        "it": "Italiano"
+    },
+    "Sidebar": {
+        "sidebar_title": "Prompt Pilot",
+        "sidebar_description": "Le tue conversazioni appariranno qui non appena inizi a chattare!",
+        "guest": "Ospite",
+        "toggle": "Attiva/disattiva",
+        "dark": "scuro",
+        "light": "chiaro",
+        "mode": "modalità",
+        "login": "Accedi al tuo account",
+        "new_chat": "Nuova Chat",
+        "today": "Oggi",
+        "yesterday": "Ieri",
+        "7days": "Ultimi 7 giorni",
+        "30days": "Ultimi 30 giorni",
+        "old": "Più di un mese fa",
+        "signout": "Esci",
+        "delete": "Elimina"
+    },
+    "Header": {
+        "new_chat": "Nuova Chat",
+        "en": "Inglese",
+        "it": "Italiano",
+        "toggle_sidebar": "Mostra/Nascondi barra laterale"
+    },
+    "Suggestions": {
+        "suggestion_1_title": "Fornisci esempi di",
+        "suggestion_1_label": "formati di prompt efficaci",
+        "suggestion_1_prompt": "Fornisci 3 esempi di formati di prompt efficaci per casi d'uso diversi (es. domande e risposte, generazione di codice, sintesi).",
+        "suggestion_2_title": "Rendi il mio prompt",
+        "suggestion_2_label": "più creativo e coinvolgente",
+        "suggestion_2_prompt": "Puoi rendere questo prompt più creativo e coinvolgente: 'Descrivi una città del futuro'?",
+        "suggestion_3_title": "Converti questa istruzione",
+        "suggestion_3_label": "in un prompt basato su ruoli",
+        "suggestion_3_prompt": "Converti questa frase in un prompt basato su ruoli: 'Spiega come vola un aereo.'",
+        "suggestion_4_title": "Scrivi un prompt che usi",
+        "suggestion_4_label": "esempi few-shot per la classificazione",
+        "suggestion_4_prompt": "Scrivi un prompt che usi esempi few-shot per classificare le email come 'spam' o 'non spam'."
+    },
+    "Artifact": {
+        "header": "Analisi e Feedback del Prompt",
+        "copy": "Copia negli appunti"
+    }
+}

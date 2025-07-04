@@ -23,8 +23,9 @@ import {
   ShareIcon,
   TrashIcon,
 } from './icons';
-import { memo } from 'react';
+import { memo, useTransition } from 'react';
 import { useChatVisibility } from '@/hooks/use-chat-visibility';
+import { useTranslations } from 'next-intl';
 
 const PureChatItem = ({
   chat,
@@ -37,6 +38,8 @@ const PureChatItem = ({
   onDelete: (chatId: string) => void;
   setOpenMobile: (open: boolean) => void;
 }) => {
+  const t = useTranslations('Sidebar');
+
   const { visibilityType, setVisibilityType } = useChatVisibility({
     chatId: chat.id,
     initialVisibilityType: chat.visibility,
@@ -62,7 +65,7 @@ const PureChatItem = ({
         </DropdownMenuTrigger>
 
         <DropdownMenuContent side="bottom" align="end">
-          <DropdownMenuSub>
+          {/* <DropdownMenuSub>
             <DropdownMenuSubTrigger className="cursor-pointer">
               <ShareIcon />
               <span>Share</span>
@@ -97,14 +100,14 @@ const PureChatItem = ({
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
-          </DropdownMenuSub>
+          </DropdownMenuSub> */}
 
           <DropdownMenuItem
             className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
             onSelect={() => onDelete(chat.id)}
           >
             <TrashIcon />
-            <span>Delete</span>
+            <span>{t('delete')}</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

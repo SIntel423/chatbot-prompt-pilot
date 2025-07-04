@@ -39,6 +39,7 @@ function PureArtifactMessages({
     status,
   });
 
+
   return (
     <div
       ref={messagesContainerRef}

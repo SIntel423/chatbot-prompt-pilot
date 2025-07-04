@@ -27,6 +27,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 import { useScrollToBottom } from '@/hooks/use-scroll-to-bottom';
 import type { VisibilityType } from './visibility-selector';
+import { useTranslations } from 'next-intl';
 
 function PureMultimodalInput({
   chatId,
@@ -186,6 +187,7 @@ function PureMultimodalInput({
   );
 
   const { isAtBottom, scrollToBottom } = useScrollToBottom();
+  const t = useTranslations('Home');
 
   useEffect(() => {
     if (status === 'submitted') {
@@ -265,7 +267,7 @@ function PureMultimodalInput({
       <Textarea
         data-testid="multimodal-input"
         ref={textareaRef}
-        placeholder="Send a message..."
+        placeholder={t("message_box_placeholder")}
         value={input}
         onChange={handleInput}
         className={cx(

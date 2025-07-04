@@ -23,12 +23,13 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
   description: 'Useful for text content, like drafting essays and emails.',
   initialize: async ({ documentId, setMetadata }) => {
     const suggestions = await getSuggestions({ documentId });
-
+    console.log("streamPart")
     setMetadata({
       suggestions,
     });
   },
   onStreamPart: ({ streamPart, setMetadata, setArtifact }) => {
+
     if (streamPart.type === 'suggestion') {
       setMetadata((metadata) => {
         return {
@@ -41,14 +42,15 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
     }
 
     if (streamPart.type === 'text-delta') {
+
       setArtifact((draftArtifact) => {
         return {
           ...draftArtifact,
           content: draftArtifact.content + (streamPart.content as string),
           isVisible:
             draftArtifact.status === 'streaming' &&
-            draftArtifact.content.length > 400 &&
-            draftArtifact.content.length < 450
+              draftArtifact.content.length > 400 &&
+              draftArtifact.content.length < 450
               ? true
               : draftArtifact.isVisible,
           status: 'streaming',
@@ -70,7 +72,6 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
     if (isLoading) {
       return <DocumentSkeleton artifactKind="text" />;
     }
-
     if (mode === 'diff') {
       const oldContent = getDocumentContentById(currentVersionIndex - 1);
       const newContent = getDocumentContentById(currentVersionIndex);
@@ -91,8 +92,8 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
           />
 
           {metadata &&
-          metadata.suggestions &&
-          metadata.suggestions.length > 0 ? (
+            metadata.suggestions &&
+            metadata.suggestions.length > 0 ? (
             <div className="md:hidden h-dvh w-12 shrink-0" />
           ) : null}
         </div>
@@ -101,57 +102,16 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
   },
   actions: [
     {
-      icon: <ClockRewind size={18} />,
-      description: 'View changes',
-      onClick: ({ handleVersionChange }) => {
-        handleVersionChange('toggle');
-      },
-      isDisabled: ({ currentVersionIndex, setMetadata }) => {
-        if (currentVersionIndex === 0) {
-          return true;
-        }
-
-        return false;
-      },
-    },
-    {
-      icon: <UndoIcon size={18} />,
-      description: 'View Previous version',
-      onClick: ({ handleVersionChange }) => {
-        handleVersionChange('prev');
-      },
-      isDisabled: ({ currentVersionIndex }) => {
-        if (currentVersionIndex === 0) {
-          return true;
-        }
-
-        return false;
-      },
-    },
-    {
-      icon: <RedoIcon size={18} />,
-      description: 'View Next version',
-      onClick: ({ handleVersionChange }) => {
-        handleVersionChange('next');
-      },
-      isDisabled: ({ isCurrentVersion }) => {
-        if (isCurrentVersion) {
-          return true;
-        }
-
-        return false;
-      },
-    },
-    {
       icon: <CopyIcon size={18} />,
       description: 'Copy to clipboard',
       onClick: ({ content }) => {
+        console.log(content)
         navigator.clipboard.writeText(content);
         toast.success('Copied to clipboard!');
       },
     },
   ],
   toolbar: [
-    
+
   ],
 });

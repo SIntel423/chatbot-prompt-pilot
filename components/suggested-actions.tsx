@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { memo } from 'react';
 import type { UseChatHelpers } from '@ai-sdk/react';
 import type { VisibilityType } from './visibility-selector';
+import { useTranslations } from 'next-intl';
 
 interface SuggestedActionsProps {
   chatId: string;
@@ -19,26 +20,28 @@ function PureSuggestedActions({
 }: SuggestedActionsProps) {
   const suggestedActions = [
     {
-      title: 'Give examples of',
-      label: 'effective prompt formats',
+      title: "suggestion_1_title",
+      label: "suggestion_1_label",
       action: 'Give 3 examples of effective prompt formats for different use cases (e.g. Q&A, code generation, summarization).',
     },
     {
-      title: 'Make my prompt',
-      label: 'more creative and engaging',
+      title: "suggestion_2_title",
+      label: "suggestion_2_label",
       action: 'Can you make this prompt more creative and engaging: "Describe a city of the future"?',
     },
     {
-      title: 'Convert this instruction',
-      label: 'into a role-based prompt',
+      title: "suggestion_3_title",
+      label: "suggestion_3_label",
       action: 'Convert this into a role-based prompt: "Explain how a plane flies."',
     },
     {
-      title: 'Write a prompt that uses',
-      label: 'few-shot examples for classification',
+      title: "suggestion_4_title",
+      label: "suggestion_4_label",
       action: 'Write a prompt that uses few-shot examples to classify emails as "spam" or "not spam".',
     },
   ];
+
+  const t = useTranslations("Suggestions");
 
   return (
     <div
@@ -66,9 +69,9 @@ function PureSuggestedActions({
             }}
             className="text-left border rounded-xl px-4 py-3.5 text-sm flex-1 gap-1 sm:flex-col w-full h-auto justify-start items-start"
           >
-            <span className="font-medium">{suggestedAction.title}</span>
+            <span className="font-medium">{t(suggestedAction.title)}</span>
             <span className="text-muted-foreground">
-              {suggestedAction.label}
+              {t(suggestedAction.label)}
             </span>
           </Button>
         </motion.div>

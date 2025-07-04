@@ -1,0 +1,67 @@
+{
+    "Home": {
+        "greeting_hearder": "Hello there!",
+        "greeting_description": "How can I help you today?",
+        "message_box_placeholder": "Send a message...",
+        "prompt_feedback": "Prompt Feedback",
+        "edit_message": "Edit Message",
+        "copy": "Copy",
+        "upvote": "Upvote Response",
+        "downvote": "Downvote Response",
+        "think": "Prompt Pilot is thinking..."
+    },
+    "Account": {
+        "signin": "Sign In",
+        "signin_description": "Use your email and password to sign in",
+        "email": "Email Address",
+        "password": "Password",
+        "dont_have_account": "Don't have an account? ",
+        "signup": "Sign Up",
+        "free": " for free. ",
+        "language": "Language",
+        "en": "English",
+        "it": "Italian"
+    },
+    "Sidebar": {
+        "sidebar_title": "Prompt Pilot",
+        "sidebar_description": "Your conversations will appear here once you start chatting!",
+        "guest": "Guest",
+        "toggle": "Toggle",
+        "dark": "dark",
+        "light": "light",
+        "mode": "mode",
+        "login": "Login to your account",
+        "new_chat": "New Chat",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "7days": "Last 7 days",
+        "30days": "Last 30 days",
+        "old": "Older than last month",
+        "signout": "Sign Out",
+        "delete": "Delete"
+    },
+    "Header": {
+        "new_chat": "New Chat",
+        "en": "English",
+        "it": "Italian",
+        "toggle_sidebar": "Toggle Sidebar"
+    },
+    "Suggestions": {
+        "suggestion_1_title": "Give examples of",
+        "suggestion_1_label": "effective prompt formats",
+        "suggestion_1_prompt": "Give 3 examples of effective prompt formats for different use cases (e.g. Q&A, code generation, summarization).",
+        "suggestion_2_title": "Make my prompt",
+        "suggestion_2_label": "more creative and engaging",
+        "suggestion_2_prompt": "Can you make this prompt more creative and engaging: 'Describe a city of the future'?",
+        "suggestion_3_title": "Convert this instruction",
+        "suggestion_3_label": "into a role-based prompt",
+        "suggestion_3_prompt": "Convert this into a role-based prompt: 'Explain how a plane flies.'",
+        "suggestion_4_title": "Write a prompt that use",
+        "suggestion_4_label": "few-shot examples for classification",
+        "suggestion_4_prompt": "Write a prompt that uses few-shot examples to classify emails as 'spam' or 'not spam'."
+    },
+    "Artifact": {
+        "header": "Prompt Analysis & Feedback",
+        "copy": "Copy to clipboard"
+    }
+}

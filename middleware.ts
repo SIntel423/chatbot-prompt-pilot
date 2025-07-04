@@ -1,6 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { guestRegex, isDevelopmentEnvironment } from './lib/constants';
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -16,6 +20,12 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/auth')) {
     return NextResponse.next();
   }
+
+  if (pathname.includes('api/')) {
+    return NextResponse.next();
+  }
+
+  const intlResponse = intlMiddleware(request);
 
   const token = await getToken({
     req: request,
@@ -37,7 +47,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next();
+  return intlResponse;
 }
 
 export const config = {

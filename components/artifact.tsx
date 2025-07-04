@@ -28,6 +28,7 @@ import { textArtifact } from '@/artifacts/text/client';
 import equal from 'fast-deep-equal';
 import type { UseChatHelpers } from '@ai-sdk/react';
 import type { VisibilityType } from './visibility-selector';
+import { useTranslations } from 'next-intl';
 
 export const artifactDefinitions = [
   textArtifact,
@@ -68,6 +69,7 @@ function PureArtifact({
   votes,
   isReadonly,
   selectedVisibilityType,
+  feedbackMessages
 }: {
   chatId: string;
   input: string;
@@ -84,8 +86,17 @@ function PureArtifact({
   reload: UseChatHelpers['reload'];
   isReadonly: boolean;
   selectedVisibilityType: VisibilityType;
+  feedbackMessages: Array<UIMessage>;
 }) {
   const { artifact, setArtifact, metadata, setMetadata } = useArtifact();
+
+  const [feedback, setFeedback] = useState<Array<UIMessage>>(feedbackMessages);
+
+  useEffect(() => {
+    if (feedbackMessages.length > 0) {
+      setFeedback(feedbackMessages);
+    }
+  }, [feedbackMessages]);
 
   const {
     data: documents,
@@ -104,6 +115,8 @@ function PureArtifact({
 
   const { open: isSidebarOpen } = useSidebar();
 
+  const t = useTranslations("Artifact");
+
   useEffect(() => {
     if (documents && documents.length > 0) {
       const mostRecentDocument = documents.at(-1);
@@ -113,7 +126,7 @@ function PureArtifact({
         setCurrentVersionIndex(documents.length - 1);
         setArtifact((currentArtifact) => ({
           ...currentArtifact,
-          content: mostRecentDocument.content ?? '',
+          content: (mostRecentDocument.content ?? '')
         }));
       }
     }
@@ -256,7 +269,7 @@ function PureArtifact({
 
   return (
     <AnimatePresence>
-      {artifact.isVisible && (
+      {(artifact.isVisible || feedback.length > 0) && (
         <motion.div
           data-testid="artifact"
           className="flex flex-row h-dvh w-dvw fixed top-0 left-0 z-50 bg-transparent"
@@ -317,7 +330,7 @@ function PureArtifact({
                   chatId={chatId}
                   status={status}
                   votes={votes}
-                  messages={messages}
+                  messages={messages || feedback}
                   setMessages={setMessages}
                   reload={reload}
                   isReadonly={isReadonly}
@@ -334,7 +347,7 @@ function PureArtifact({
                     stop={stop}
                     attachments={attachments}
                     setAttachments={setAttachments}
-                    messages={messages}
+                    messages={messages || feedback}
                     append={append}
                     className="bg-background dark:bg-muted"
                     setMessages={setMessages}
@@ -350,56 +363,56 @@ function PureArtifact({
             initial={
               isMobile
                 ? {
-                    opacity: 1,
-                    x: artifact.boundingBox.left,
-                    y: artifact.boundingBox.top,
-                    height: artifact.boundingBox.height,
-                    width: artifact.boundingBox.width,
-                    borderRadius: 50,
-                  }
+                  opacity: 1,
+                  x: artifact.boundingBox.left,
+                  y: artifact.boundingBox.top,
+                  height: artifact.boundingBox.height,
+                  width: artifact.boundingBox.width,
+                  borderRadius: 50,
+                }
                 : {
-                    opacity: 1,
-                    x: artifact.boundingBox.left,
-                    y: artifact.boundingBox.top,
-                    height: artifact.boundingBox.height,
-                    width: artifact.boundingBox.width,
-                    borderRadius: 50,
-                  }
+                  opacity: 1,
+                  x: artifact.boundingBox.left,
+                  y: artifact.boundingBox.top,
+                  height: artifact.boundingBox.height,
+                  width: artifact.boundingBox.width,
+                  borderRadius: 50,
+                }
             }
             animate={
               isMobile
                 ? {
-                    opacity: 1,
-                    x: 0,
-                    y: 0,
-                    height: windowHeight,
-                    width: windowWidth ? windowWidth : 'calc(100dvw)',
-                    borderRadius: 0,
-                    transition: {
-                      delay: 0,
-                      type: 'spring',
-                      stiffness: 200,
-                      damping: 30,
-                      duration: 5000,
-                    },
-                  }
+                  opacity: 1,
+                  x: 0,
+                  y: 0,
+                  height: windowHeight,
+                  width: windowWidth ? windowWidth : 'calc(100dvw)',
+                  borderRadius: 0,
+                  transition: {
+                    delay: 0,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 30,
+                    duration: 5000,
+                  },
+                }
                 : {
-                    opacity: 1,
-                    x: windowWidth/2,
-                    y: 0,
-                    height: windowHeight,
-                    width: windowWidth
-                      ? windowWidth/2
-                      : 'calc(100dvw-400px)',
-                    borderRadius: 0,
-                    transition: {
-                      delay: 0,
-                      type: 'spring',
-                      stiffness: 200,
-                      damping: 30,
-                      duration: 5000,
-                    },
-                  }
+                  opacity: 1,
+                  x: windowWidth / 2,
+                  y: 0,
+                  height: windowHeight,
+                  width: windowWidth
+                    ? windowWidth / 2
+                    : 'calc(100dvw-400px)',
+                  borderRadius: 0,
+                  transition: {
+                    delay: 0,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 30,
+                    duration: 5000,
+                  },
+                }
             }
             exit={{
               opacity: 0,
@@ -414,10 +427,10 @@ function PureArtifact({
           >
             <div className="p-2 flex flex-row justify-between items-start">
               <div className="flex flex-row gap-4 items-start">
-                <ArtifactCloseButton />
+                <ArtifactCloseButton setFeedback={setFeedback} />
 
                 <div className="flex flex-col">
-                  <div className="font-medium">{artifact.title}</div>
+                  <div className="font-medium">{artifact.title || t('header')}</div>
 
                   {isContentDirty ? (
                     <div className="text-sm text-muted-foreground">
@@ -434,7 +447,8 @@ function PureArtifact({
                       )}`}
                     </div>
                   ) : (
-                    <div className="w-32 h-3 mt-2 bg-muted-foreground/20 rounded-md animate-pulse" />
+                    <></>
+                    // <div className="w-32 h-3 mt-2 bg-muted-foreground/20 rounded-md animate-pulse" />
                   )}
                 </div>
               </div>
@@ -452,10 +466,10 @@ function PureArtifact({
 
             <div className="dark:bg-muted bg-background h-full overflow-y-scroll !max-w-full items-center">
               <artifactDefinition.content
-                title={artifact.title}
+                title={artifact.title || "Prompt Feedback"}
                 content={
                   isCurrentVersion
-                    ? artifact.content
+                    ? (artifact.content || feedback[1]?.content)
                     : getDocumentContentById(currentVersionIndex)
                 }
                 mode={mode}
