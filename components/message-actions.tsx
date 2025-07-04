@@ -80,10 +80,10 @@ export function PureMessageActions({
               disabled={vote && !vote.isUpvoted}
               onClick={handleFeedbackClick}
             >
-              <FeedbackIcon />
+              {t('prompt_analysis')}
             </Button>
           </TooltipTrigger>
-          <TooltipContent>{t('prompt_feedback')}</TooltipContent>
+          {/* <TooltipContent>{t('prompt_feedback')}</TooltipContent> */}
         </Tooltip>
       </div>
     </TooltipProvider>

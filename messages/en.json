@@ -8,7 +8,8 @@
         "copy": "Copy",
         "upvote": "Upvote Response",
         "downvote": "Downvote Response",
-        "think": "Prompt Pilot is thinking..."
+        "think": "Prompt Pilot is thinking...",
+        "prompt_analysis": "Prompt Analysis"
     },
     "Account": {
         "signin": "Sign In",

@@ -93,11 +93,11 @@ export function LanguageSelector({
                 >
                     {selectedVisibility?.icon}
                     {selectedVisibility?.label}
-                    {/* <ChevronDownIcon /> */}
+                    <ChevronDownIcon />
                 </Button>
             </DropdownMenuTrigger>
 
-            {/* <DropdownMenuContent align="start" className="min-w-[200px]">
+            <DropdownMenuContent align="start" className="min-w-[200px]">
                 {visibilities.map((visibility) => (
                     <DropdownMenuItem
                         data-testid={`visibility-selector-item-${visibility.id}`}
@@ -131,7 +131,7 @@ export function LanguageSelector({
                         </div>
                     </DropdownMenuItem>
                 ))}
-            </DropdownMenuContent> */}
+            </DropdownMenuContent>
         </DropdownMenu>
     );
 }

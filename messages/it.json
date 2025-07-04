@@ -8,7 +8,8 @@
         "copy": "Copia",
         "upvote": "Vota positivamente la risposta",
         "downvote": "Vota negativamente la risposta",
-        "think": "Prompt Pilot sta pensando..."
+        "think": "Prompt Pilot sta pensando...",
+        "prompt_analysis": "Analisi del Prompt"
     },
     "Account": {
         "signin": "Accedi",
